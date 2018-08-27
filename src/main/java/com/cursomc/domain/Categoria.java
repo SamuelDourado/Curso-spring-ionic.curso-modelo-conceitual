@@ -47,6 +47,14 @@ public class Categoria implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
 
 	@Override
 	public int hashCode() {
@@ -72,6 +80,7 @@ public class Categoria implements Serializable {
 			return false;
 		return true;
 	}
+	
 	
 	
 }
