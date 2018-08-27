@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cursomc.domain.Categoria;
-import com.cursomc.servicee.CategoriaService;
+import com.cursomc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/categorias")
