@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Estado implements Serializable {
@@ -19,7 +20,7 @@ public class Estado implements Serializable {
 	private Integer id;
 	private String nome;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="estado")
 	List<Cidade> cidades = new ArrayList<Cidade>();
 	
@@ -81,8 +82,4 @@ public class Estado implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
 }
