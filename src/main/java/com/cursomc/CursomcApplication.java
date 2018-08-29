@@ -1,5 +1,6 @@
 package com.cursomc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.cursomc.domain.Cidade;
 import com.cursomc.domain.Cliente;
 import com.cursomc.domain.Endereco;
 import com.cursomc.domain.Estado;
+import com.cursomc.domain.Pagamento;
+import com.cursomc.domain.PagamentoComBoleto;
+import com.cursomc.domain.PagamentoComCartao;
+import com.cursomc.domain.Pedido;
 import com.cursomc.domain.Produto;
+import com.cursomc.domain.enums.EstadoPagamento;
 import com.cursomc.domain.enums.TipoCliente;
 import com.cursomc.ropositories.CategoriaRepository;
 import com.cursomc.ropositories.CidadeRepository;
 import com.cursomc.ropositories.ClienteRepository;
 import com.cursomc.ropositories.EnderecoRepository;
 import com.cursomc.ropositories.EstadoRepository;
+import com.cursomc.ropositories.PagamentoRepository;
+import com.cursomc.ropositories.PedidoRepository;
 import com.cursomc.ropositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -35,6 +43,10 @@ public class CursomcApplication implements CommandLineRunner{
 	private ClienteRepository RCliente;
 	@Autowired
 	private EnderecoRepository REndereco;
+	@Autowired
+	private PedidoRepository RPedido;
+	@Autowired
+	private PagamentoRepository RPagamento;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -76,6 +88,19 @@ public class CursomcApplication implements CommandLineRunner{
  		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
  		
  		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+ 		
+ 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+ 		
+ 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+ 		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+ 		
+ 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+ 		ped1.setPagamento(pagto1);
+ 		
+ 		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+ 		ped2.setPagamento(pagto2);
+ 		
+ 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
 		this.RCategoria.saveAll(Arrays.asList(cat1, cat2));
 		this.RProduto.saveAll(Arrays.asList(prod1,prod2,prod3));
@@ -83,6 +108,8 @@ public class CursomcApplication implements CommandLineRunner{
 		this.RCidade.saveAll(Arrays.asList(c1, c2, c3));
 		this.RCliente.saveAll(Arrays.asList(cli1));
 		this.REndereco.saveAll(Arrays.asList(e1, e2));
+		this.RPedido.saveAll(Arrays.asList(ped1, ped2));
+		this.RPagamento.saveAll(Arrays.asList(pagto1, pagto2));
 		
 	}
 }
