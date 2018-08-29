@@ -13,6 +13,7 @@ import com.cursomc.domain.Cidade;
 import com.cursomc.domain.Cliente;
 import com.cursomc.domain.Endereco;
 import com.cursomc.domain.Estado;
+import com.cursomc.domain.ItemPedido;
 import com.cursomc.domain.Pagamento;
 import com.cursomc.domain.PagamentoComBoleto;
 import com.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.cursomc.ropositories.CidadeRepository;
 import com.cursomc.ropositories.ClienteRepository;
 import com.cursomc.ropositories.EnderecoRepository;
 import com.cursomc.ropositories.EstadoRepository;
+import com.cursomc.ropositories.ItemPedidoRepository;
 import com.cursomc.ropositories.PagamentoRepository;
 import com.cursomc.ropositories.PedidoRepository;
 import com.cursomc.ropositories.ProdutoRepository;
@@ -47,6 +49,8 @@ public class CursomcApplication implements CommandLineRunner{
 	private PedidoRepository RPedido;
 	@Autowired
 	private PagamentoRepository RPagamento;
+	@Autowired
+	private ItemPedidoRepository RItemPedido;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -101,6 +105,17 @@ public class CursomcApplication implements CommandLineRunner{
  		ped2.setPagamento(pagto2);
  		
  		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+ 		
+ 		ItemPedido ip1 = new ItemPedido(ped1, prod1, 0.00, 1, 2000.00);
+ 		ItemPedido ip2 = new ItemPedido(ped1, prod3, 0.00, 2, 80.00);
+ 		ItemPedido ip3 = new ItemPedido(ped2, prod2, 100.00, 1, 800.00);
+ 		
+ 		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+ 		ped2.getItens().addAll(Arrays.asList(ip3));
+ 		
+ 		prod1.getItens().addAll(Arrays.asList(ip1));
+ 		prod2.getItens().addAll(Arrays.asList(ip3));
+ 		prod3.getItens().addAll(Arrays.asList(ip2));
 		
 		this.RCategoria.saveAll(Arrays.asList(cat1, cat2));
 		this.RProduto.saveAll(Arrays.asList(prod1,prod2,prod3));
@@ -110,6 +125,7 @@ public class CursomcApplication implements CommandLineRunner{
 		this.REndereco.saveAll(Arrays.asList(e1, e2));
 		this.RPedido.saveAll(Arrays.asList(ped1, ped2));
 		this.RPagamento.saveAll(Arrays.asList(pagto1, pagto2));
+		this.RItemPedido.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 }
